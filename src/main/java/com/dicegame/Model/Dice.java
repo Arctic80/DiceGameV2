@@ -1,4 +1,4 @@
-package com.dicegame;
+package com.dicegame.Model;
 
 import java.util.concurrent.ThreadLocalRandom;
 

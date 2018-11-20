@@ -1,11 +1,13 @@
-package com.dicegame;
+package com.dicegame.Model;
+
+import com.dicegame.Utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Player {
-
+public class Player
+{
     private static Integer lastId = 1;
     private final Integer id;
     private String name;
@@ -13,38 +15,42 @@ public class Player {
     private List<PlayResult> playResults = new ArrayList<>();
 
 
-    public Player(String name) {
-
+    public Player(String name)
+    {
         if (name.equals("")) this.name = "ANONYMOUS";
         else this.name = name;
         id = lastId;
         lastId++;
     }
 
-    public void addPlayResult(PlayResult playResult) {
-
+    public void addPlayResult(PlayResult playResult)
+    {
         if (playResult.isWin()) wins++;
         playResults.add(playResult);
     }
 
-    public List<PlayResult> listPlayResults() {
+    public List<PlayResult> listPlayResults()
+    {
         return playResults;
     }
 
-    public void deletePlays() {
+    public void deletePlays()
+    {
         playResults.clear();
     }
 
-    public double successRate() {
-
+    public double successRate()
+    {
         double successRate = ((double) wins / (double) playResults.size()) * 100;
-
         return successRate;
     }
 
-    public String getSuccessRate() {
+    public String getSuccessRate()
+    {
+        double successRate;
 
-        double successRate = ((double) wins / (double) playResults.size()) * 100;
+        if (playResults.size() <= 0) return "Player hasn't played yet";
+        else successRate = ((double) wins / (double) playResults.size()) * 100;
 
         return Utils.roundDoubleToString(successRate);
     }

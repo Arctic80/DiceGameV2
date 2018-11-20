@@ -1,20 +1,23 @@
-package com.dicegame;
+package com.dicegame.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlayResult {
+public class PlayResult
+{
 
     private List<Integer> diceValues = new ArrayList<>();
 
     private boolean win;
 
-    public PlayResult() {
+    public PlayResult()
+    {
         win = true;
     }
 
-    public void addDiceValue(Integer value) {
+    public void addDiceValue(Integer value)
+    {
         diceValues.add(value);
         win = win && (value == 5 || value == 6);
     }
@@ -23,7 +26,8 @@ public class PlayResult {
         return win;
     }
 
-    public List<Integer> getDiceValues() {
+    public List<Integer> getDiceValues()
+    {
         return diceValues;
     }
 }

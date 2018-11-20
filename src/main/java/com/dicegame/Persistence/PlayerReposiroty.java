@@ -1,27 +1,28 @@
-package com.dicegame;
+package com.dicegame.Persistence;
+
+import com.dicegame.Exceptions.NotFoundException;
+import com.dicegame.Model.Player;
 
 import java.util.*;
 
 
 public class PlayerReposiroty
 {
-    private static PlayerReposiroty instance;
-
+    private static PlayerReposiroty instance = new PlayerReposiroty();
     Map<Integer, Player> players = new HashMap<>();
+    Collection<String> registeredNames = new ArrayList<>();
 
-    private PlayerReposiroty()
-    {
-    }
+
+    private PlayerReposiroty() {}
 
     public static PlayerReposiroty getInstance()
     {
-        if (instance == null) instance = new PlayerReposiroty();
         return instance;
     }
 
     public List<Player> getPlayers() throws NotFoundException
     {
-        if (players.size() == 0) throw new NotFoundException();
+        if (players.isEmpty()) throw new NotFoundException();
 
         return new ArrayList(players.values());
     }
@@ -34,6 +35,7 @@ public class PlayerReposiroty
     public void addPlayer(Integer id, Player player)
     {
         players.put(id, player);
+        registeredNames.add(player.getName());
     }
 
     public void removePlayer(Integer id)
@@ -41,15 +43,20 @@ public class PlayerReposiroty
         players.remove(id);
     }
 
-    public void updatePlayer(Integer id, String name) {
-
+    public void updatePlayer(Integer id, String name)
+    {
         Player player = players.get(id);
         player.setName(name);
         players.put(id, player);
     }
 
-    public int size(){
-
+    public int size()
+    {
         return players.size();
+    }
+
+    public boolean contains(String name)
+    {
+        return registeredNames.contains(name);
     }
 }
