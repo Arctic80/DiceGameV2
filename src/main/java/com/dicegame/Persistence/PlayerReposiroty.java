@@ -50,11 +50,6 @@ public class PlayerReposiroty
         players.put(id, player);
     }
 
-    public int size()
-    {
-        return players.size();
-    }
-
     public boolean contains(String name)
     {
         return registeredNames.contains(name);

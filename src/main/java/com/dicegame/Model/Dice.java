@@ -16,8 +16,7 @@ public class Dice
         return this;
     }
 
-    public int getRollValue()
-    {
+    public int getRollValue() {
         return rollValue;
     }
 }

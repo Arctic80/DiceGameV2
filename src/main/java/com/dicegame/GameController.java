@@ -9,7 +9,9 @@ import com.dicegame.Persistence.PlayerReposiroty;
 import com.dicegame.Utils.Utils;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class GameController
@@ -49,20 +51,12 @@ public class GameController
     {
         PlayResult playResult = new PlayResult();
 
-        for (int i = 0; i < 6; i++){
-            Dice d = new Dice().rollDice();
-
-            System.out.println("sdad  :" + d.getRollValue());
-            playResult.addDiceValue(d.getRollValue());
-        }
+        for (int i = 0; i < 2; i++) playResult.addDiceValue(new Dice().rollDice().getRollValue());
 
         playerReposiroty.getPlayer(id).addPlayResult(playResult);
 
-        String result;
-        if (playResult.isWin()) result = "You Win!";
-        else result = "You Lose!";
-
-        return result;
+        if (playResult.isWin()) return "You Win!";
+        else return "You Lose!";
     }
 
     public void deletePlays(int id)
@@ -82,36 +76,73 @@ public class GameController
 
     public String getAverageSuccessRate() throws NotFoundException
     {
-        double ratesSum = 0;
+        double successSum = 0;
+        int havePlayedCount = 0;
 
-        for (Player p : playerReposiroty.getPlayers()) ratesSum = ratesSum + p.successRate();
+        for (Player p : playerReposiroty.getPlayers())
+        {
+            if (p.successRate() != 101)
+            {
+                successSum = successSum + p.successRate();
+                havePlayedCount++;
+            }
+        }
 
-        double avgSuccessRate = ratesSum / playerReposiroty.size();
+        String resultString;
+        if (havePlayedCount == 0) resultString = "Nobody has played yet";
+        else
+        {
+            double avgSuccessRate = successSum / havePlayedCount;
+            resultString = Utils.roundDoubleToString(avgSuccessRate);
+        }
 
-        return Utils.roundDoubleToString(avgSuccessRate);
+        return resultString;
     }
 
-    public String getBestSuccessRate() throws NotFoundException
+    public Map<String, Object> getBestSuccessRate() throws NotFoundException
     {
-        List<Player> tempList = playerReposiroty.getPlayers();
-        tempList.sort(new SortbyRate());
+        Map<String, Object> map = new HashMap<>();
 
-        return Utils.roundDoubleToString(tempList.get(0).successRate());
+        List<Player> list = playerReposiroty.getPlayers();
+        list.sort(new SortByRate());
+
+        int i = list.size() - 1;
+        boolean found = false;
+        while (!found && i >= 0)
+        {
+            if (list.get(i).successRate() != 101.0) found = true;
+            else i--;
+        }
+
+        if (i >= 0)
+        {
+            map.put("PlayerId", list.get(i).getId());
+            map.put("Success Rate", Utils.roundDoubleToString(list.get(i).successRate()));
+        }
+        else
+        {
+            map.put("PlayerId", "Nobody has played yet");
+            map.put("Success Rate", "Nobody has played yet");
+        }
+        return map;
     }
 
     public String getWorstSuccessRate() throws NotFoundException
     {
-        List<Player> tempList = playerReposiroty.getPlayers();
-        tempList.sort(new SortbyRate());
+        List<Player> list = playerReposiroty.getPlayers();
+        list.sort(new SortByRate());
 
-        return Utils.roundDoubleToString(tempList.get(0).successRate());
+        double worstRate = list.get(0).successRate();
+
+        if (worstRate == 101.0) return "Nobody has played yet";
+        else return Utils.roundDoubleToString(worstRate);
     }
 
-    private class SortbyRate implements Comparator<Player>
+    private class SortByRate implements Comparator<Player>
     {
         public int compare(Player a, Player b)
         {
-            return (int) (a.successRate() * 100 - b.successRate() * 100);
+            return (int) (a.successRate() - b.successRate());
         }
     }
 }

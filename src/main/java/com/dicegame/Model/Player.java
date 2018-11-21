@@ -1,7 +1,6 @@
 package com.dicegame.Model;
 
 import com.dicegame.Utils.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,22 +28,23 @@ public class Player
         playResults.add(playResult);
     }
 
-    public List<PlayResult> listPlayResults()
-    {
+    public List<PlayResult> listPlayResults() {
         return playResults;
     }
 
-    public void deletePlays()
-    {
+    public void deletePlays() {
         playResults.clear();
     }
 
     public double successRate()
     {
+        if (playResults.size() <= 0) return 101;
         double successRate = ((double) wins / (double) playResults.size()) * 100;
+
         return successRate;
     }
 
+    // Json
     public String getSuccessRate()
     {
         double successRate;
@@ -66,6 +66,4 @@ public class Player
     public void setName(String name) {
         this.name = name;
     }
-
-
 }
