@@ -16,7 +16,6 @@ import java.util.Map;
 
 public class GameController
 {
-
     PlayerReposiroty playerReposiroty = PlayerReposiroty.getInstance();
 
     public GameController()
