@@ -5,7 +5,6 @@ import com.dicegame.Exceptions.NotFoundException;
 import com.dicegame.Model.PlayResult;
 import com.dicegame.Model.Player;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -16,14 +15,12 @@ public class DiceGameController
     GameController gameController = new GameController();
 
     @GetMapping("/players")
-    public List<Player> listPlayers() throws NotFoundException
-    {
+    public List<Player> listPlayers() throws NotFoundException {
         return gameController.listPlayers();
     }
 
     @PostMapping("/players")
-    public String createPlayer(@RequestParam(required = false, defaultValue = "") String name) throws AlreadyExistsException
-    {
+    public String createPlayer(@RequestParam(required = false, defaultValue = "") String name) throws AlreadyExistsException {
         return "Player: " + gameController.createPlayer(name) + " created.";
     }
 
@@ -42,14 +39,12 @@ public class DiceGameController
     }
 
     @GetMapping("/players/{id}/games")
-    public List<PlayResult> listPlayerResults(@PathVariable int id)
-    {
+    public List<PlayResult> listPlayerResults(@PathVariable int id) {
         return gameController.listPlayerResults(id);
     }
 
     @PostMapping("/players/{id}/games")
-    public String playGame(@PathVariable int id)
-    {
+    public String playGame(@PathVariable int id) {
         return gameController.play(id);
     }
 
@@ -62,20 +57,17 @@ public class DiceGameController
     }
 
     @GetMapping("/players/ranking")
-    public String getAverageSuccessRate() throws NotFoundException
-    {
+    public String getAverageSuccessRate() throws NotFoundException {
         return "Average success rate is: " + gameController.getAverageSuccessRate();
     }
 
     @GetMapping("/players/ranking/winner")
-    public Map<String, Object> getBestSuccessRate() throws NotFoundException
-    {
+    public Map<String, Object> getBestSuccessRate() throws NotFoundException {
         return gameController.getBestSuccessRate();
     }
 
     @GetMapping("/players/ranking/loser")
-    public String getWorstSuccessRate() throws NotFoundException
-    {
+    public String getWorstSuccessRate() throws NotFoundException {
         return gameController.getWorstSuccessRate();
     }
 }

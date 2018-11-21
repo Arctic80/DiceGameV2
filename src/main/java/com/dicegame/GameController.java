@@ -7,7 +7,6 @@ import com.dicegame.Model.PlayResult;
 import com.dicegame.Model.Player;
 import com.dicegame.Persistence.PlayerReposiroty;
 import com.dicegame.Utils.Utils;
-
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -16,16 +15,11 @@ import java.util.Map;
 
 public class GameController
 {
-
     PlayerReposiroty playerReposiroty = PlayerReposiroty.getInstance();
 
-    public GameController()
-    {
-        PlayerReposiroty.getInstance();
-    }
+    public GameController() {}
 
-    public List<Player> listPlayers() throws NotFoundException
-    {
+    public List<Player> listPlayers() throws NotFoundException {
         return playerReposiroty.getPlayers();
     }
 
@@ -59,18 +53,15 @@ public class GameController
         else return "You Lose!";
     }
 
-    public void deletePlays(int id)
-    {
+    public void deletePlays(int id) {
         playerReposiroty.getPlayer(id).deletePlays();
     }
 
-    public void deletePlayer(Integer id)
-    {
+    public void deletePlayer(Integer id) {
         playerReposiroty.removePlayer(id);
     }
 
-    public List<PlayResult> listPlayerResults(int id)
-    {
+    public List<PlayResult> listPlayerResults(int id) {
         return playerReposiroty.getPlayer(id).listPlayResults();
     }
 
@@ -124,6 +115,7 @@ public class GameController
             map.put("PlayerId", "Nobody has played yet");
             map.put("Success Rate", "Nobody has played yet");
         }
+
         return map;
     }
 
@@ -138,10 +130,8 @@ public class GameController
         else return Utils.roundDoubleToString(worstRate);
     }
 
-    private class SortByRate implements Comparator<Player>
-    {
-        public int compare(Player a, Player b)
-        {
+    private class SortByRate implements Comparator<Player> {
+        public int compare(Player a, Player b) {
             return (int) (a.successRate() - b.successRate());
         }
     }
